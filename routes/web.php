@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,5 +34,6 @@ Route::middleware('auth')->group(function () {
 // Event Crud
 Route::middleware('auth')->group(function(){
     Route::resource('/event', EventController::class);
+    Route::resource('/category', CategoryController::class);
 });
 require __DIR__.'/auth.php';

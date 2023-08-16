@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -12,6 +13,8 @@ class CategoryController extends Controller
     public function index()
     {
         //
+        $categories = Category::all();
+        return view('pages.category.index', compact('categories'));
     }
 
     /**
@@ -20,6 +23,7 @@ class CategoryController extends Controller
     public function create()
     {
         //
+        return view('pages.category.create');
     }
 
     /**
@@ -27,7 +31,18 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validate the incoming request data
+        $validatedData = $request->validate([
+            'name' => 'required|max:255',
+        ]);
+
+        // Create a new Post instance and fill it with the validated data
+        Category::create([
+            'name' => $request->name,
+        ]);
+
+        // Redirect or return a response
+        return redirect()->route('category.index')->with('success', 'Post created successfully');
     }
 
     /**
@@ -44,6 +59,8 @@ class CategoryController extends Controller
     public function edit(string $id)
     {
         //
+        $category = Category::find($id);
+        return view('pages.category.edit', compact('category'));
     }
 
     /**
@@ -51,7 +68,19 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // Validate the incoming request data
+        $validatedData = $request->validate([
+            'name' => 'required|max:255',
+        ]);
+
+        // Update Category
+        $category = Category::find($id);
+        $category->update([
+            'name' => $request->name,
+        ]);
+
+        // Redirect or return a response
+        return redirect()->route('category.index')->with('success', 'Category updated  successfully');
     }
 
     /**
@@ -60,5 +89,8 @@ class CategoryController extends Controller
     public function destroy(string $id)
     {
         //
+        Category::find($id)->delete();
+
+        return redirect()->route('category.index')->with('success', 'Category deleted successfully');
     }
 }

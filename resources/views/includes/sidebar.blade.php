@@ -16,12 +16,20 @@
         <div class="navbar-nav w-100">
             <a href="{{route('dashboard')}}" class="nav-item nav-link {{ Request::is('/') ? 'active' : '' }}"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
             <div class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggle {{ Request::is('event') ? 'active' : '' }}" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Events</a>
+                <a href="#" class="nav-link dropdown-toggle {{ Request::is('category') ? 'active' : '' }}" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Category</a>
                 <div class="dropdown-menu bg-transparent border-0">
-                    <a href="{{route('event.index')}}" class="dropdown-item">List</a>
-                    <a href="{{route('event.create')}}" class="dropdown-item">Create</a>
+                    <a href="{{route('category.index')}}" class="dropdown-item {{ Request::is('category') ? 'active' : '' }}">List</a>
+                    <a href="{{route('category.create')}}" class="dropdown-item {{ Request::is('category/create') ? 'active' : '' }}">Create</a>
                 </div>
             </div>
+            <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle {{ Request::is('event') ? 'active' : '' }}" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Events</a>
+                <div class="dropdown-menu bg-transparent border-0">
+                    <a href="{{route('event.index')}}" class="dropdown-item {{ Request::is('event') ? 'active' : '' }}">List</a>
+                    <a href="{{route('event.create')}}" class="dropdown-item {{ Request::is('event/create') ? 'active' : '' }}">Create</a>
+                </div>
+            </div>
+            
             {{-- <a href="widget.html" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Widgets</a>
             <a href="form.html" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Forms</a>
             <a href="table.html" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Tables</a>

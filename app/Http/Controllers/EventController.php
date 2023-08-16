@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\Event;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
@@ -11,8 +13,8 @@ class EventController extends Controller
      */
     public function index()
     {
-        //
-        return view('pages.event.index');
+        $events = Event::with('category')->get();
+        return view('pages.event.index', compact('events'));
     }
 
     /**
@@ -20,7 +22,8 @@ class EventController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::all();
+        return view('pages.event.create', compact('categories'));
     }
 
     /**
@@ -28,7 +31,28 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validate the incoming request data
+        $validatedData = $request->validate([
+            'title' => 'required|max:255',
+            'category' => 'required',
+            'description' => 'required',
+            'date' => 'required|date',
+            'time' => 'required',
+            'location' => 'required',
+        ]);
+
+        // Create a new Post instance and fill it with the validated data
+        Event::create([
+            'title' => $request->title,
+            'category_id' => $request->category,
+            'description' => $request->description,
+            'date' => $request->date,
+            'time' => $request->time,
+            'location' => $request->location,
+        ]);
+
+        // Redirect or return a response
+        return redirect()->route('event.index')->with('success', 'Event created successfully');
     }
 
     /**
@@ -45,6 +69,9 @@ class EventController extends Controller
     public function edit(string $id)
     {
         //
+        $event = Event::find($id);
+        $categories = Category::all();
+        return view('pages.event.edit', compact('event', 'categories'));
     }
 
     /**
@@ -52,7 +79,29 @@ class EventController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // Validate the incoming request data
+        $validatedData = $request->validate([
+            'title' => 'required|max:255',
+            'category' => 'required',
+            'description' => 'required',
+            'date' => 'required|date',
+            'time' => 'required',
+            'location' => 'required',
+        ]);
+
+        // Create a new Post instance and fill it with the validated data
+        $event = Event::find($id);
+        $event->update([
+            'title' => $request->title,
+            'category_id' => $request->category,
+            'description' => $request->description,
+            'date' => $request->date,
+            'time' => $request->time,
+            'location' => $request->location,
+        ]);
+
+        // Redirect or return a response
+        return redirect()->route('event.index')->with('success', 'Event updated successfully');
     }
 
     /**
@@ -61,5 +110,8 @@ class EventController extends Controller
     public function destroy(string $id)
     {
         //
+        Event::find($id)->delete();
+
+        return redirect()->route('event.index')->with('success', 'Event deleted successfully');
     }
 }

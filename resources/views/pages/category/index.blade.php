@@ -23,28 +23,21 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">Title</th>
-                                        <th scope="col">Description</th>
-                                        <th scope="col">Category</th>
-                                        <th scope="col">Location</th>
-                                        <th scope="col">Date</th>
-                                        <th scope="col">Time</th>
-                                        <th>Action</th>
+                                        <th scope="col" class="col-md-8">Category Name</th>
+                                        <th scope="col">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($events as $event)
+                                    @php 
+                                    $sl = 1;
+                                    @endphp
+                                    @foreach($categories as $category)
                                     <tr>
-                                        <th scope="row">1</th>
-                                        <td>{{ $event->title}}</td>
-                                        <td>{{ $event->description}}</td>
-                                        <td>{{ $event->category->name}}</td>
-                                        <td>{{ $event->location}}</td>
-                                        <td>{{ $event->date}}</td>
-                                        <td>{{ $event->time}}</td>
-                                        <td class="col-md-2">
-                                            <a href="{{route('event.edit', $event->id)}}" class="btn btn-primary btn-sm">Edit</a>
-                                            <button class="btn btn-danger btn-sm" data-id="{{$event->id}}" data-bs-toggle="modal" data-bs-target="#deleteModalEvent">Delete</button>
+                                        <th scope="row">{{ $sl++ }}</th>
+                                        <td>{{ $category->name }}</td>
+                                        <td>
+                                            <a href="{{route('category.edit', $category->id)}}" class="btn btn-primary btn-sm">Edit</a>
+                                            <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="{{ $category->id }}">Delete</button>
                                         </td>
                                     </tr>
                                     @endforeach
@@ -58,7 +51,7 @@
         <!-- Table End -->
 
         <!-- Delete Modal -->
-        <div class="modal fade" id="deleteModalEvent" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -91,10 +84,11 @@
 
     <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+    
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            var deleteModal = document.getElementById('deleteModalEvent');
+            var deleteModal = document.getElementById('deleteModal');
             
             if (deleteModal) {
                 deleteModal.addEventListener('show.bs.modal', function (event) {
@@ -102,10 +96,9 @@
                     var itemId = button.getAttribute('data-id'); // Extract item ID from data-id attribute
                     var modal = this;
                     
-                    modal.querySelector('#deleteForm').setAttribute('action', '/event/' + itemId); // Update form action
+                    modal.querySelector('#deleteForm').setAttribute('action', '/category/' + itemId); // Update form action
                 });
             }
         });
     </script>
-    
 @endsection
