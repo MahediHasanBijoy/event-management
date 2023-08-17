@@ -17,7 +17,32 @@
             <div class="row g-4">
                 <div class="col-12">
                     <div class="bg-light rounded h-100 p-4">
-                        <h6 class="mb-4">Events</h6>
+                        <div class="d-flex justify-content-between">
+                            <h6 class="mb-4">Events</h6>
+                            <div class="d-flex ml-2">
+                                
+                                <div>
+                                    <a href="{{ route('event.create')}}" class="btn btn-primary btn-sm mb-2">Add Event</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <form action="{{ route('event.index') }}" method="GET" class="d-flex mb-2">
+                                <div class="form-group">
+                                    <label for="category" class="d-block d-md-inline-block">Filter by Category:</label>
+                                    <select name="category" id="category" class="form-control-sm">
+                                        <option value="" selected>All Categories</option>
+                                        @foreach($categories as $category)
+                                            <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
+                                                {{ $category->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <button type="submit" class="btn btn-primary btn-sm">Filter</button>
+                                </div>
+                                
+                            </form>
+                        </div>
                         <div class="table-responsive">
                             <table class="table">
                                 <thead>

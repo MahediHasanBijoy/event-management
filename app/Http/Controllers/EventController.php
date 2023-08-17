@@ -11,10 +11,15 @@ class EventController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $events = Event::with('category')->get();
-        return view('pages.event.index', compact('events'));
+        if($request->has('category')){
+            $events = Event::with('category')->where('user_id', auth()->id())->where('category_id', $request->category)->get();
+        }else{
+            $events = Event::with('category')->where('user_id', auth()->id())->get();
+        }
+        $categories = Category::all();
+        return view('pages.event.index', compact('events', 'categories'));
     }
 
     /**
@@ -49,6 +54,7 @@ class EventController extends Controller
             'date' => $request->date,
             'time' => $request->time,
             'location' => $request->location,
+            'user_id' => auth()->id(),
         ]);
 
         // Redirect or return a response
